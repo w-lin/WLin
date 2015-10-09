@@ -1,0 +1,10 @@
+.jumbotron{
+  text-align:center;
+}
+
+a{
+  color: red;
+  &:hover{
+    text-decoration: none;
+  }
+}
