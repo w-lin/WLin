@@ -7,6 +7,7 @@ var watch = require('gulp-watch');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
+var concatCss = require('gulp-concat-css');
 
 gulp.task('devjs', function(){
    return gulp.src('public/javascripts/src/*.js')
@@ -15,11 +16,14 @@ gulp.task('devjs', function(){
 });
 
 gulp.task('depsjs', function(){
-    return gulp.src(['node_modules/angular/angular.js',
+    console.log('run depsjs')
+    return gulp.src(['node_modules/angular/angular.min.js',
+        'node_modules/angular-route/angular-route.js',
+        'node_modules/jquery/dist/jquery.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.js',
-        'public/javascripts/controller.js'])
+        'public/javascripts/src/controller.js'])
         .pipe(concat('deps.js'))
-        .pipe(gulp.dest('public/javascripts'));
+        .pipe(gulp.dest('public/javascripts/dist'));
 });
 
 gulp.task('depsDist', function(){
@@ -31,20 +35,32 @@ gulp.task('depsDist', function(){
 
 
 gulp.task('sass', function(){
-   return gulp.src(['public/css/src/style.scss'])
+    console.log('sass');
+    return gulp.src(['public/css/src/style.scss'])
        .pipe(sass())
-       .pipe(gulp.dest('public/css'))
+       .pipe(gulp.dest('public/css/src'));
+
 });
 
-gulp.task('sass-watch', ['sass'], browserSync.reload);
+gulp.task('concat-css', function(){
+    console.log('concat-css');
+    return gulp.src(['public/css/src/style.css',
+        'node_modules/bootstrap/dist/css/bootstrap.min.css',
+        'node_modules/bootstrap/dist/css/bootstrap-theme.min.css'])
+        .pipe(concatCss('style.css'))
+        .pipe(gulp.dest('public/css/dist'));
+});
+
+gulp.task('sass-watch', ['sass', 'concat-css']/*, browserSync.reload*/);
 
 gulp.task('watch', function(){
+    /*
     browserSync({
         server: {
             baseDir: 'public'
         }
-    });
-    gulp.watch('public/javascripts/src/*.js', ['devjs']);
+    });*/
+    gulp.watch('public/javascripts/src/*.js', ['depsjs']);
     gulp.watch('public/css/src/*.scss', ['sass-watch']);
 });
 

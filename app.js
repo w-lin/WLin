@@ -30,7 +30,8 @@ MongoClient.connect('mongodb://localhost:27017/contactlist', function(err, db) {
   app.use(cookieParser());
   app.use(require('less-middleware')(path.join(__dirname, 'public')));
  // app.use(express.static(path.join(__dirname, 'public/views')));
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/public'))
+  //app.use(express.static(path.join(__dirname, 'public')));;
 
   //app.use('/', routes);
   //app.use('/users', users);
@@ -71,8 +72,8 @@ MongoClient.connect('mongodb://localhost:27017/contactlist', function(err, db) {
   app.get('/', function(req, res, next) {
     console.log('innnnnnnnnnnnn');
     res.sendFile('public/views/index.html');
-  });*/
-
+  });
+*/
   app.get('/contactlist', function (req, res) {
     console.log('I received a GET request');
 
